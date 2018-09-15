@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -13,8 +14,8 @@ namespace CloverNet.SecurityTool
                 using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
                 {
                     byte[] inputByteArray = Encoding.UTF8.GetBytes(originalStr);
-                    des.Key = ASCIIEncoding.ASCII.GetBytes(secretKey);
-                    des.IV = ASCIIEncoding.ASCII.GetBytes(secretKey);
+                    des.Key = ASCIIEncoding.ASCII.GetBytes(MD5.Encrypt(secretKey).Substring(0, 8));
+                    des.IV = ASCIIEncoding.ASCII.GetBytes(MD5.Encrypt(secretKey).Substring(0, 8));
                     System.IO.MemoryStream ms = new System.IO.MemoryStream();
                     using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write))
                     {
@@ -33,8 +34,8 @@ namespace CloverNet.SecurityTool
                 byte[] inputByteArray = Convert.FromBase64String(secretStr);
                 using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
                 {
-                    des.Key = ASCIIEncoding.ASCII.GetBytes(secretKey);
-                    des.IV = ASCIIEncoding.ASCII.GetBytes(secretKey);
+                    des.Key = ASCIIEncoding.ASCII.GetBytes(MD5.Encrypt(secretKey).Substring(0, 8));
+                    des.IV = ASCIIEncoding.ASCII.GetBytes(MD5.Encrypt(secretKey).Substring(0, 8));
                     System.IO.MemoryStream ms = new System.IO.MemoryStream();
                     using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Write))
                     {

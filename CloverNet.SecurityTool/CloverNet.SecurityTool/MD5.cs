@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using System.Text;
 
 namespace CloverNet.SecurityTool
 {
@@ -8,17 +9,15 @@ namespace CloverNet.SecurityTool
         {
             public static string Encrypt(string originalStr)
             {
-                System.Security.Cryptography.MD5 md5 = new MD5CryptoServiceProvider();
-                byte[] fromData = System.Text.Encoding.Unicode.GetBytes(originalStr);
-                byte[] targetData = md5.ComputeHash(fromData);
-                string byte2String = null;
-
-                for (int i = 0; i < targetData.Length; i++)
+                MD5CryptoServiceProvider md5Hasher = new MD5CryptoServiceProvider();
+                byte[] hashedDataBytes;
+                hashedDataBytes = md5Hasher.ComputeHash(Encoding.GetEncoding("gb2312").GetBytes(originalStr));
+                StringBuilder byte2String = new StringBuilder();
+                foreach (byte i in hashedDataBytes)
                 {
-                    byte2String += targetData[i].ToString("x");
+                    byte2String.Append(i.ToString("x2"));
                 }
-
-                return byte2String;
+                return byte2String.ToString();
             }
         }
     }
